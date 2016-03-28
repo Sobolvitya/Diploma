@@ -3,12 +3,12 @@ import random
 #from pybrain.tools.shortcuts import buildNetwork
 FILENAME = "ExprResult.txt"
 KState = 5
-countComp = 5
+countComp = 3
 influenceCoef =0.5
 thereholds = 2
 startCycle = 0
 endCycle =0
-countCycle = 1;
+
 arrStartPoints = []
 
 
@@ -107,7 +107,7 @@ def modelingNextState(prevState,nextState,dependMatrx,sizeN,maxValue):
         tmp = tmp if (tmp < maxValue) else maxValue
         tmp = tmp if tmp >= 1 else 1
         nextState.append(tmp)
-
+countCycle = 1;
 
 def modelingWholeLoop(stMatr,dpMatr,tstMatr,countIteration, testFlag):
     tstMatr.append(stMatr)
@@ -148,7 +148,7 @@ def modelingWholeLoop(stMatr,dpMatr,tstMatr,countIteration, testFlag):
             for i in range(startCycle,endCycle,1):
                 tmpMatr.append(tstMatr[i])
             tstMatr = []
-
+            global countCycle
             fileN1 = "Result\ResultMatrix" + str(countCycle) + ".txt"
             write(fileN1,tmpMatr)
             fileN2 = "Result\DependMatrix" + str(countCycle) + ".txt"
@@ -160,31 +160,36 @@ def modelingWholeLoop(stMatr,dpMatr,tstMatr,countIteration, testFlag):
         write ("Result\NotResultMatrix.txt",tstMatr)
 
 
+def loopModeling():
+
+    for i in range(100000):
+        stMatr = []
+        dpMatr = []
+        nxtMatr = []
+        createStateComponentWithNormalVarite(stMatr,countComp,KState)
+       # stMatr = [1,4,3]
+        createDependencyMatrix(dpMatr, countComp)
+       # write("DependMatrix.txt",dpMatr)
+        #read("DependMatrix.txt",dpMatr)
+        print "depMatr"
+        print dpMatr
+        print "stMatr"
+        print stMatr
+
+
+
+        tstMatr = []
+        testFlag = []
+        modelingWholeLoop(stMatr,dpMatr,tstMatr,1000,testFlag)
+        global countCycle
+        if testFlag[0] == 1:
+            countCycle = int(countCycle) + 1
 
 
 
 #=================================MAIN CODE==============================================
-for i in range(100000):
-    stMatr = []
-    dpMatr = []
-    nxtMatr = []
-    createStateComponentWithNormalVarite(stMatr,countComp,KState)
-   # stMatr = [1,4,3]
-    createDependencyMatrix(dpMatr, countComp)
-   # write("DependMatrix.txt",dpMatr)
-    #read("DependMatrix.txt",dpMatr)
-    print "depMatr"
-    print dpMatr
-    print "stMatr"
-    print stMatr
 
-
-
-    tstMatr = []
-    testFlag = []
-    modelingWholeLoop(stMatr,dpMatr,tstMatr,1000,testFlag)
-    if testFlag[0] == 1:
-        countCycle = int(countCycle) + 1
+loopModeling()
 
 #setMatrix(A, 4, 5)
 #write(A)
