@@ -72,13 +72,15 @@ def  createDependencyMatrix (A, sizeN):
     for i in range(sizeN):
         Ai = []
         for j in range (sizeN):
+            k = random.randint(-1,1)
+
             #ak = getDependecyPair()
-            if(i == j ):
-                Ai.append(0)
-            else:
-                k = (random.randint(0,1))
-                if k == 0: k = -1
-                Ai.append(k)
+            #if(i == j ):
+             #   Ai.append(0)
+            #else:
+               # k = (random.randint(0,1))
+                #if k == 0: k = -1
+            Ai.append(k)
 
         A.append(Ai)
 
@@ -107,7 +109,7 @@ def modelingNextState(prevState,nextState,dependMatrx,sizeN,maxValue):
         tmp = tmp if (tmp < maxValue) else maxValue
         tmp = tmp if tmp >= 1 else 1
         nextState.append(tmp)
-countCycle = 1;
+
 
 def modelingWholeLoop(stMatr,dpMatr,tstMatr,countIteration, testFlag):
     tstMatr.append(stMatr)
@@ -162,7 +164,7 @@ def modelingWholeLoop(stMatr,dpMatr,tstMatr,countIteration, testFlag):
 
 def loopModeling():
 
-    for i in range(100000):
+    for i in range(1000000):
         stMatr = []
         dpMatr = []
         nxtMatr = []
@@ -188,8 +190,8 @@ def loopModeling():
 
 
 #=================================MAIN CODE==============================================
-
-loopModeling()
+countCycle = 1;
+#loopModeling()
 
 #setMatrix(A, 4, 5)
 #write(A)
