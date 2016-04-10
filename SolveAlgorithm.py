@@ -1,6 +1,6 @@
 import Main
-
-
+import random
+import itertools
 possibleD = [-1,0,1]
 arrayOfPossibleDLines = []
 generalD = []
@@ -37,9 +37,6 @@ def findPossibleDString (sum, ArrD,count,Aconcret,sumTrue,generalD):
 
 
 def findDependMatrix (A1, A2):
-    arrDepemMatrix = []
-    generalDForString = []
-
     for i in range(len(A1)):
         diff = A2[i] - A1[i]
         ArrD = []
@@ -55,10 +52,6 @@ def findDependMatrix (A1, A2):
         findPossibleDString(0,ArrD,0,A1,diff,generalDForString)
         generalD.append(generalDForString)
 
-    for i in generalD:
-        print i
-        print "\n"
-
 
 def getNextVarietyOfDependecyMatrix():
     for i in range (len(sequenceCombinationDependMatrix)-1,-1,-1):
@@ -69,26 +62,54 @@ def getNextVarietyOfDependecyMatrix():
             sequenceCombinationDependMatrix[i] = 0
     return False
 
-def setLastElementSequens():
-
+def setFisrtAndLastElementSequens():
+    '''
+    We use sequens from 0...0 to N...N to use different
+    combination of dependecy matrix, where N is the last number of
+    every possible combinations
+    '''
+    global lastElement
+    lastElement = []
+    global sequenceCombinationDependMatrix
+    sequenceCombinationDependMatrix = []
     for i in range(len(generalD)):
         lastElement.append(len(generalD[i]))
     print lastElement
+    for i in range(Main.countComp):
+        sequenceCombinationDependMatrix.append(1)
 
+
+def ReNullGlovalVariables():
+    global generalD
+    generalD = []
+    global arrayOfPossibleDLines
+    arrayOfPossibleDLines = []
 resultMatrix = []
 def mainFunc ():
 
     realDependecyMatrix = []
-
     Main.read("ResultMatrix6.txt", resultMatrix)
     Main.read("DependMatrix6.txt",realDependecyMatrix)
-    for i in range(len(resultMatrix)):
-        sequenceOfStripMatrix.append(i)
-    findDependMatrix(resultMatrix[0],resultMatrix[1])
+    listPermutation = [k for k in range(len(resultMatrix))]
+    allPermutations = list(itertools.permutations(listPermutation))
+
+    for i in range(len (allPermutations)):
+
+        ReNullGlovalVariables()
+        global  resultMatrix
+        resultMatrix = []
+        for k in range(len(listPermutation[i])):
+            resultMatrix.append(listPermutation[i][k])
+            print resultMatrix
+        findDependMatrix(resultMatrix[0],resultMatrix[1])
+        setFisrtAndLastElementSequens()
+        if [] in generalD:
+            continue
+        testDependMatrix()
+
 
 
 def testDependMatrix():
-
     global sequenceCombinationDependMatrix
     for j in range(Main.countComp):
          sequenceCombinationDependMatrix[j] = 1
@@ -105,8 +126,6 @@ def testDependMatrix():
         for k in range(len(tmpMatr)):
             for k1 in range(len(tmpMatr)):
                 depMatr[k1][k] = tmpMatr[k][k1]
-        if(depMatr == [[0,1,-1],[-1,0,1],[1,-1,0]]):
-            print "Here"
         #Now we have depend matrix and we should test is it works
         isCorrect = 1
         for i in range (1,len(resultMatrix)):
@@ -121,18 +140,11 @@ def testDependMatrix():
         if isCorrect == 1:
             print "Yes"
             print depMatr
-            break;
-
-
-
 
 
 #==================MAIN=CODE==================
 lastElement = []
 sequenceCombinationDependMatrix = []
-sequenceOfStripMatrix = []
-for i in range(Main.countComp):
-    sequenceCombinationDependMatrix.append(1)
+
 mainFunc()
-setLastElementSequens()
-testDependMatrix()
+
