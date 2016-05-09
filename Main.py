@@ -3,7 +3,7 @@ import random
 #from pybrain.tools.shortcuts import buildNetwork
 FILENAME = "ExprResult.txt"
 KState = 5
-countComp = 3
+countComp = 4
 influenceCoef =0.5
 thereholds = 2
 startCycle = 0
