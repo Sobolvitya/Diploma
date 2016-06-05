@@ -3,7 +3,7 @@
 from pybrain.datasets import ClassificationDataSet
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import RPropMinusTrainer
-
+from pybrain.supervised.trainers import BackpropTrainer
 def readData(fileName):
     A = []
     file = open(fileName, 'r')
@@ -49,8 +49,9 @@ def teachNeuralNetwork(countState,testNumber):
 
 
     ds._convertToOneOfMany()
-    net = buildNetwork(ds.indim, 200, ds.outdim ,recurrent = True)
-    trainer = RPropMinusTrainer(net, dataset = ds, momentum = 0.1, verbose = False,weightdecay=0.03)
+    net = buildNetwork(ds.indim, 300, ds.outdim ,recurrent = True)
+  #  trainer = RPropMinusTrainer(net, dataset = ds, momentum = 0.1, verbose = False,weightdecay=0.03)
+    trainer = BackpropTrainer(net, dataset = ds, momentum = 0.1, verbose = False,weightdecay=0.03)
     trainer.trainUntilConvergence(maxEpochs= 2000)
     tstData =  (readData("DataMatrixExpr" + str(testNumber) + ".txt"))
 
